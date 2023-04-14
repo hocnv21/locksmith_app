@@ -18,7 +18,7 @@ import MapView, {
   Callout,
 } from 'react-native-maps';
 
-const GOOGLE_MAPS_APIKEY = 'AIzaSyDYWtP2hykeWKnJHJIPaJcFff68Uecg-co';
+const GOOGLE_MAPS_APIKEY = 'AIzaSyDvH3f3z8eYs8Q-IolL2xJIshzQgjuQnV8';
 
 const {width, height} = Dimensions.get('window');
 

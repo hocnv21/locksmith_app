@@ -15,7 +15,11 @@ import AppContext from '../../navigator/AppContext';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 
-export default function OrderDetail() {
+export default function Unlocking() {
+  const baseUrl =
+    Platform.OS === 'ios'
+      ? 'http://localhost:3000'
+      : 'https://d25c-2001-ee0-4fc4-af90-e187-11b6-a37a-c15c.ap.ngrok.io';
   const navigation = useNavigation();
   const {user} = useContext(AppContext);
   const SIZE = {
@@ -25,35 +29,27 @@ export default function OrderDetail() {
   const route = useRoute();
   const {newOrders, customer} = route.params;
   const [locksmiths, setLocksmiths] = useState(null);
-  const baseUrl =
-    Platform.OS === 'ios'
-      ? 'http://localhost:3000'
-      : 'https://d25c-2001-ee0-4fc4-af90-e187-11b6-a37a-c15c.ap.ngrok.io';
 
-  const getUser = async () => {
-    const idlocksmith = user.uid;
+  const onPressComplete = async () => {
+    const idLocksmith = user.uid;
+    const configurationObject = {
+      url: `${baseUrl}/order/complete/${newOrders._id}`,
+      method: 'PUT',
+    };
 
-    const source = axios.CancelToken.source();
-
-    const url = `${baseUrl}/locksmith/${idlocksmith}`;
-    console.log('waiting  get locksmith !!!!!!!!!');
-
-    axios
-      .get(url)
-      .then(value => {
-        console.log(value.data.data);
-        setLocksmiths(value.data.data);
-        return;
+    await axios(configurationObject)
+      .then(response => {
+        if (response.status === 200) {
+          navigation.navigate('HomeScreen');
+        } else {
+          throw new Error('An error has occurred');
+        }
       })
-      .catch(e => {
-        console.log('err get ' + e);
-        console.log(locksmiths);
+      .catch(error => {
+        alert('An error has occurred');
       });
   };
 
-  useEffect(() => {
-    getUser();
-  }, []);
   return (
     <ScrollView>
       <View
@@ -174,13 +170,7 @@ export default function OrderDetail() {
 
         <View>
           <Pressable
-            onPress={() =>
-              navigation.navigate('Order', {
-                dataOrder: newOrders,
-                locksmith: locksmiths,
-                customer: customer,
-              })
-            }
+            onPress={onPressComplete}
             // onPress={() => console.log('presssssss')}
             style={{
               width: SIZE.WIDTH * 0.9,
@@ -191,7 +181,7 @@ export default function OrderDetail() {
               marginVertical: 40,
             }}>
             <Text style={{fontSize: 24, color: '#ffffff', fontWeight: '700'}}>
-              Bắt Đầu
+              Kết thúc đơn
             </Text>
           </Pressable>
         </View>

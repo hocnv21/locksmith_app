@@ -16,9 +16,6 @@ import MapViewDirections from 'react-native-maps-directions';
 import axios from 'axios';
 
 import Entypo from 'react-native-vector-icons/Entypo';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import styles from './styles';
 
@@ -28,10 +25,11 @@ import Geolocation from '@react-native-community/geolocation';
 
 import AppContext from '../../navigator/AppContext';
 import BottomView from '../../components/HomeComponents/BottomView';
+import {URL_DEVICE} from '@env';
 
 const origin = {latitude: 10.82313, longitude: 106.688829};
 const destination = {latitude: 10.82213, longitude: 106.686829};
-const GOOGLE_MAPS_APIKEY = 'AIzaSyDYWtP2hykeWKnJHJIPaJcFff68Uecg-co';
+const GOOGLE_MAPS_APIKEY = 'AIzaSyDvH3f3z8eYs8Q-IolL2xJIshzQgjuQnV8';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -47,67 +45,10 @@ const HomeScreen = () => {
   const [newOrders, setNewOrders] = useState([]);
 
   const {user} = useContext(AppContext);
-
-  const androidPermissions = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Unlocker App location Permission',
-          message:
-            'Unlocker App needs access to your location ' +
-            'so you can take awesome rides.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the location');
-        subscribeLocationLocation();
-      } else {
-        console.log('Location permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-  useEffect(() => {
-    if (Platform.OS === 'android') {
-      androidPermissions();
-    } else {
-      //Android
-      Geolocation.requestAuthorization();
-    }
-  }, []);
-  const subscribeLocationLocation = () => {
-    Geolocation.watchPosition(
-      position => {
-        //Will give you the location on location change
-
-        console.log(position);
-
-        //getting the Longitude from the location json
-        const currentLongitude = JSON.stringify(position.coords.longitude);
-
-        //getting the Latitude from the location json
-        const currentLatitude = JSON.stringify(position.coords.latitude);
-
-        //Setting Longitude state
-        setCurrentLongitude(currentLongitude);
-
-        //Setting Latitude state
-        setCurrentLatitude(currentLatitude);
-      },
-      error => {
-        console.log(error.message);
-      },
-      {
-        enableHighAccuracy: false,
-        maximumAge: 1000,
-      },
-    );
-  };
+  const baseUrl =
+    Platform.OS === 'ios'
+      ? 'http://localhost:3000'
+      : 'https://d25c-2001-ee0-4fc4-af90-e187-11b6-a37a-c15c.ap.ngrok.io';
 
   const onPressActive = () => {
     setIsActive(!isActive);
@@ -168,27 +109,21 @@ const HomeScreen = () => {
     };
   };
 
-  const baseUrl =
-    Platform.OS === 'ios'
-      ? 'http://localhost:3000'
-      : 'https://af22-2001-ee0-4fc4-af90-71c0-c896-33e6-bf5c.ap.ngrok.io';
-
   function getCustomer() {
     const source = axios.CancelToken.source();
 
     const url = `${baseUrl}/customer/${newOrders[0].customer_id}`;
-    console.log('waiting  get customer !!!!!!!!!');
+    // console.log('waiting  get customer !!!!!!!!!');
 
     axios
       .get(url)
       .then(value => {
-        console.log(value.data.data);
         setCustomer(value.data.data);
         return;
       })
       .catch(e => {
         console.log('err get ' + e);
-        console.log(customer);
+        // console.log(customer);
       });
   }
   async function getOrder() {
@@ -196,12 +131,11 @@ const HomeScreen = () => {
 
     const idCustomer = user.uid;
     const url = `${baseUrl}/order/pendingOrder/${idCustomer}`;
-    console.log('waiting get order !!!!!!!!!');
+    // console.log('waiting get order !!!!!!!!!');
 
     await axios
       .get(url)
       .then(value => {
-        console.log(value.data.data);
         setNewOrders(value.data.data);
         getCustomer();
         setModalVisible(true);
@@ -223,8 +157,8 @@ const HomeScreen = () => {
         showsMyLocationButton={true}
         // onUserLocationChange={onUserLocationChange}
         initialRegion={{
-          latitude: currentLatitude,
-          longitude: currentLongitude,
+          latitude: 10.82213,
+          longitude: 106.686829,
           latitudeDelta: 0.0222,
           longitudeDelta: 0.0121,
         }}>

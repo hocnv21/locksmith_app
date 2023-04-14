@@ -6,6 +6,7 @@ import SearchResults from '../screens/SearchResults';
 import HomeScreen from '../screens/HomeScreen';
 
 import WaitingOrderScreen from '../screens/OrderScreen/WaitingOrderScreen';
+import OrderScreen from '../screens/OrderScreen/OrderScreen';
 
 const Stack = createStackNavigator();
 
@@ -15,12 +16,13 @@ const HomeNavigator = () => {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName={'Home'}>
+      initialRouteName={'HomeScreen'}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name={'DestinationSearch'} component={DestinationSearch} />
       <Stack.Screen name={'SearchResults'} component={SearchResults} />
 
       <Stack.Screen name={'WaitingOrder'} component={WaitingOrderScreen} />
+      <Stack.Screen name={'Order'} component={OrderScreen} />
     </Stack.Navigator>
   );
 };

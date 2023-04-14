@@ -15,6 +15,7 @@ import RouteMap from '../../components/RouteMap';
 
 import {useRoute, useNavigation} from '@react-navigation/native';
 import AppContext from '../../navigator/AppContext';
+import {baseUrl} from '../../contains';
 
 const SearchResults = props => {
   const typeState = useState(null);
@@ -27,8 +28,8 @@ const SearchResults = props => {
 
   const {originPlace} = route.params;
 
-  const baseUrl =
-    Platform.OS === 'ios' ? 'http://localhost:3000' : 'http://10.0.2.2:3000';
+  // const baseUrl =
+  //   Platform.OS === 'ios' ? 'http://localhost:3000' : 'http://10.0.2.2:3000';
 
   console.log('origin lat hahaha:' + originPlace.details.geometry.location.lat);
 

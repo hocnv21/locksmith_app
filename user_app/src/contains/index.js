@@ -1,3 +1,3 @@
 import {COLORS, SIZES} from './theme';
-
-export {COLORS, SIZES};
+import {baseUrl} from './url';
+export {COLORS, SIZES, baseUrl};

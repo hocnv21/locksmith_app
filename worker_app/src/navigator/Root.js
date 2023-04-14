@@ -14,6 +14,9 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomDrawer from './CustomDrawer';
 import LoginScreen from '../screens/LoginScreen/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen/RegisterScreen';
+import ConfirmCodeScreen from '../screens/LoginScreen/ConfirmCodeScreen';
+import Test from '../screens/LoginScreen/Test';
+import OTPScreen from '../screens/OTPScreen/OTPScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -33,6 +36,16 @@ const StackAuth = () => {
       <Stack.Screen
         name="Register"
         component={RegisterScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="OTPScreen"
+        component={OTPScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Test"
+        component={Test}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
@@ -72,11 +85,15 @@ const StackHome = () => {
 const RootNavigator = () => {
   const scheme = useColorScheme();
   const [initializing, setInitializing] = useState(true);
+  const [authenticated, setAutheticated] = useState(false);
   const [user, setUser] = useState();
 
   // Handle user state changes
   function onAuthStateChanged(user) {
+    console.log(JSON.stringify(user));
+    setAutheticated(true);
     setUser(user);
+
     if (initializing) setInitializing(false);
   }
 
@@ -94,6 +111,7 @@ const RootNavigator = () => {
       <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
         {/* <StatusBar barStyle="light-content" backgroundColor="green" /> */}
         <View style={{flex: 1}}>{!user ? <StackAuth /> : <StackHome />}</View>
+        {/* {!user ? <StackAuth /> : <StackHome />} */}
         {/* <View style={{flex: 1}}>
           <StackAuth />
         </View> */}

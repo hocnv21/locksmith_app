@@ -66,15 +66,15 @@ const styles = StyleSheet.create({
     left: SIZES.width / 2 - 30,
   },
   bottomContainer: {
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
-    right: 0,
+    // position: 'absolute',
+    // left: 0,
+    // bottom: 0,
+    // right: 0,
     height: 80,
     backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+
     padding: 15,
   },
   bottomText: {

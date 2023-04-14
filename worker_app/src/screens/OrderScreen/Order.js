@@ -5,36 +5,102 @@ import {
   Text,
   View,
   Image,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
-import React from 'react';
-import {useRoute} from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
+import Geolocation from '@react-native-community/geolocation';
+import {SIZES} from '../../contains';
+import BottomCustomer from '../../components/OrderComponents/BottomCustomer';
 
-const GOOGLE_MAPS_APIKEY = 'AIzaSyDYWtP2hykeWKnJHJIPaJcFff68Uecg-co';
+const GOOGLE_MAPS_APIKEY = 'AIzaSyDvH3f3z8eYs8Q-IolL2xJIshzQgjuQnV8';
+const ASPECT_RATIO = SIZES.width / SIZES.height;
+const LATITUDE_DELTA = 0.0122;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default function Order() {
+  const navigation = useNavigation();
   const route = useRoute();
-  const {dataOrder, locksmith} = route.params;
+  const [isFinished, setIsFinished] = useState(true);
+  const {dataOrder, locksmith, customer} = route.params;
+  const [currentLongitude, setCurrentLongitude] = useState(''); //10.82213
+  const [currentLatitude, setCurrentLatitude] = useState(''); //106.686829
+  const mapRef = useRef(null);
+
+  Geolocation.getCurrentPosition(
+    position => {
+      console.log(position);
+      setCurrentLatitude(position.coords.latitude);
+      setCurrentLongitude(position.coords.longitude);
+    },
+    error => this.setState({error: error.message}),
+    {
+      enableHighAccuracy: true,
+      timeout: 200000,
+      maximumAge: 1000,
+      distanceFilter: 10,
+    },
+  );
+
+  Geolocation.watchPosition(
+    position => {
+      console.log('watchPoin');
+      setCurrentLatitude(position.coords.latitude);
+      setCurrentLongitude(position.coords.longitude);
+    },
+    error => console.log(error),
+    {
+      enableHighAccuracy: true,
+      timeout: 20000,
+      maximumAge: 1000,
+      distanceFilter: 10,
+    },
+  );
+
+  // useEffect(() => {
+  //   const lat = locksmith?.location.coordinates[1];
+  //   const long = locksmith?.location.coordinates[0];
+  //   setCurrentLatitude(lat);
+  //   setCurrentLongitude(long);
+  // }, [currentLatitude, locksmith?.location.coordinates]);
+
+  if (currentLongitude === '') {
+    return (
+      <View>
+        <ActivityIndicator />
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         showsUserLocation={true}
-        // onUserLocationChange={onUserLocationChange}
+        followsUserLocation={true}
         initialRegion={{
-          latitude: 10.82213,
-          longitude: 106.686829,
-          latitudeDelta: 0.0222,
-          longitudeDelta: 0.0121,
+          latitude: currentLatitude,
+          longitude: currentLongitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
         }}>
         <MapViewDirections
-          origin={{
-            latitude: locksmith?.location.coordinates[1],
-            longitude: locksmith?.location.coordinates[0],
+          onReady={result => {
+            result.distance < 0.14
+              ? navigation.navigate('Unlocking', {
+                  customer: customer,
+                  newOrders: dataOrder,
+                })
+              : null;
           }}
-          // onReady={onDirectionFound}
+          origin={{
+            latitude: currentLatitude,
+            longitude: currentLongitude,
+          }}
           destination={{
             latitude: dataOrder.coordinates[1],
             longitude: dataOrder.coordinates[0],
@@ -43,16 +109,7 @@ export default function Order() {
           strokeWidth={5}
           strokeColor="blue"
         />
-        <Marker
-          coordinate={{
-            latitude: locksmith?.location.coordinates[1],
-            longitude: locksmith?.location.coordinates[0],
-          }}>
-          <Image
-            style={{height: 50, width: 50, resizeMode: 'contain'}}
-            source={require('../../assets/images/moto.png')}
-          />
-        </Marker>
+
         <Marker
           coordinate={{
             latitude: dataOrder.coordinates[1],
@@ -60,16 +117,15 @@ export default function Order() {
           }}
         />
       </MapView>
+      <BottomCustomer customer={customer} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  container: {},
   map: {
     width: '100%',
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('window').height - 140,
   },
 });

@@ -63,5 +63,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  codeFieldRoot: {marginTop: 20, borderWidth: 1, padding: 20},
+  cell: {
+    width: 40,
+    height: 40,
+    lineHeight: 38,
+    fontSize: 24,
+    fontWeight: '600',
+    color: COLORS.black,
+    borderBottomWidth: 2,
+    borderColor: '#000000',
+    textAlign: 'center',
+  },
+  focusCell: {
+    borderColor: COLORS.blue,
+  },
 });
 export default styles;

@@ -1,10 +1,13 @@
 import {Dimensions, Platform, StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
-  container: {},
-  map: {
+  container: {
     width: '100%',
     height: Dimensions.get('window').height,
+  },
+  map: {
+    width: '100%',
+    height: Dimensions.get('window').height - 80,
   },
   centeredView: {
     flex: 1,
