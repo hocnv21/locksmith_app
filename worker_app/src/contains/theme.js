@@ -17,6 +17,16 @@ export const COLORS = {
   jade_green: '#3EB8D4',
   light_gray: 'gray',
 };
+export const shadowView = {
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 4,
+  elevation: 5,
+};
 
 export const SIZES = {
   base: 10,

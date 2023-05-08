@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {View, TextInput, SafeAreaView, Platform} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import axios from 'axios';
 import styles from './styles.js';
-import PlaceRow from './PlaceRow';
+import PlaceRow from './PlaceRow.js';
 
 const homePlace = {
   description: 'Home',
@@ -15,23 +15,40 @@ const workPlace = {
   geometry: {location: {lat: 10.835099, lng: 106.6336986}}, // 221 phan huy ich
 };
 
-const DestinationSearch = props => {
+const SearchPlace = props => {
   const [originPlace, setOriginPlace] = useState(null);
-  const [locksmithNearBy, setLocksmithNearBy] = useState(null);
   const navigation = useNavigation();
-
-  const checkNavigation = async () => {
-    if (originPlace) {
-      console.log('nananananaananan');
-      navigation.navigate('SearchResults', {
-        originPlace,
-      });
-    }
-  };
+  const route = useRoute();
+  const {description, listPhotos, typeLock} = route.params;
+  // const checkNavigation = async () => {
+  //   if (originPlace) {
+  //     navigation.navigate('SearchResults', {
+  //       originPlace,
+  //     });
+  //   }
+  // };
+  console.log('list image props' + listPhotos.length);
 
   useEffect(() => {
+    // console.log(description);
+    // console.log(listPhotos.length);
+    const checkNavigation = async () => {
+      if (originPlace) {
+        navigation.navigate('SearchResults', {
+          originPlace,
+          description,
+          listPhotos,
+          typeLock,
+        });
+      }
+    };
     checkNavigation();
-  }, [originPlace]);
+  }, [description, listPhotos, navigation, originPlace, typeLock]);
+  // if (originPlace) {
+  //   navigation.navigate('SearchResults', {
+  //     originPlace: originPlace,
+  //   });
+  // }
 
   return (
     <SafeAreaView>
@@ -39,13 +56,13 @@ const DestinationSearch = props => {
         <GooglePlacesAutocomplete
           placeholder="Where from?"
           onPress={(data, details = null) => {
-            setOriginPlace({data, details});
-
             console.log(
               'location details :' + JSON.stringify(data.structured_formatting),
             );
+            setOriginPlace({data, details});
           }}
-          enablePoweredByContainer={false}
+          // enablePoweredByContainer={false}
+
           suppressDefaultStyles
           currentLocation={true}
           currentLocationLabel="Current location"
@@ -55,11 +72,15 @@ const DestinationSearch = props => {
             listView: styles.listView,
             separator: styles.separator,
           }}
-          fetchDetails
+          fetchDetails={true}
+          onFail={er => console.log(er)}
           query={{
-            key: 'AIzaSyDvH3f3z8eYs8Q-IolL2xJIshzQgjuQnV8',
+            key: 'AIzaSyAI23BFiLbrILnwcLKtYhjlJmS8PC045Oo',
             language: 'en',
+            // components: 'country:vi',
+            type: 'address',
           }}
+          minLength={5}
           renderRow={data => <PlaceRow data={data} />}
           renderDescription={data => data.description || data.vicinity}
           predefinedPlaces={[homePlace, workPlace]}
@@ -99,4 +120,4 @@ const DestinationSearch = props => {
   );
 };
 
-export default DestinationSearch;
+export default SearchPlace;

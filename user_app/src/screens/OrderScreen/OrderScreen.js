@@ -15,7 +15,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import {useInterval} from '../../API/useInterval';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {SIZES, baseUrl} from '../../contains';
+import {COLORS, SIZES, baseUrl} from '../../contains';
 import AppContext from '../../navigator/AppContext';
 
 export default function OrderScreen() {
@@ -24,24 +24,43 @@ export default function OrderScreen() {
   const {user} = useContext(AppContext);
   const {data} = route.params;
 
-  async function getOrder() {
-    const source = axios.CancelToken.source();
-    const url = `${baseUrl}/order/orderComplete/${user.uid}`;
-    // console.log('waiting get order !!!!!!!!!');
+  const showAlert = () =>
+    Alert.alert(
+      'Thông báo',
+      'Bạn muốn hủy đơn hàng ?',
 
-    await axios
-      .get(url)
-      .then(value => {
-        navigation.navigate('HomeScreen');
+      [
+        {
+          text: 'Cancel',
+          style: 'default',
+        },
+        {
+          text: 'OK',
+          onPress: () => cancelOrder(),
+          style: 'default',
+        },
+      ],
+    );
 
-        return;
+  async function cancelOrder() {
+    const configurationObject = {
+      url: `${baseUrl}/order/cancel/${data[0]._id}`,
+      method: 'PUT',
+    };
+    await axios(configurationObject)
+      .then(response => {
+        if (response.status === 201) {
+          // alert(` You have updated: ${JSON.stringify(response.data)}`);
+          navigation.navigate('HomeScreen');
+        } else {
+          throw new Error('An error cancel');
+        }
       })
-      .catch(e => {
-        console.log('err get ' + e);
+      .catch(error => {
+        console.log('An error cancel');
       });
   }
 
-  useInterval(getOrder, 3000);
   return (
     <ScrollView>
       <View
@@ -163,30 +182,46 @@ export default function OrderScreen() {
         {/* Button */}
 
         <View>
-          <Pressable
+          <Text style={styles.textNotification}>
+            *Tình trạng ổ khóa của bạn đã được gửi cho thợ khóa xem xét.
+          </Text>
+          <Text style={styles.textNotification}>
+            *Bậy giờ bạn có thể trao đỗi với thợ khóa để nhận báo giá sửa chữa
+            và tiếp tục đơn hàng.
+          </Text>
+          <TouchableOpacity
             // onPress={() =>
             //   navigation.navigate('Order', {
             //     dataOrder: newOrders,
             //     locksmith: locksmiths,
             //   })
             // }
-            onPress={() => console.log('presssssss')}
+            onPress={showAlert}
             style={{
               width: SIZES.width * 0.9,
+              borderWidth: 0.5,
+              borderRadius: 5,
               height: 60,
-              backgroundColor: 'blue',
+              backgroundColor: COLORS.light_gray,
               justifyContent: 'center',
               alignItems: 'center',
               marginVertical: 40,
             }}>
             <Text style={{fontSize: 24, color: '#ffffff', fontWeight: '700'}}>
-              Xem Chi Tiết
+              Hủy
             </Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  textNotification: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: 'red',
+    marginTop: 10,
+  },
+});

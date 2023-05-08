@@ -14,21 +14,18 @@ import React, {useState, useEffect, useContext} from 'react';
 import AppContext from '../../navigator/AppContext';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import axios from 'axios';
+import {baseUrl} from '../../contains/url';
+import {SIZES} from '../../contains';
+import ModalDealCost from '../../components/OrderComponents/ModalDealCost';
 
 export default function OrderDetail() {
   const navigation = useNavigation();
   const {user} = useContext(AppContext);
-  const SIZE = {
-    WIDTH: Dimensions.get('screen').width,
-    HEIGHT: Dimensions.get('screen').height,
-  };
+  const [modalVisible, setModalVisible] = useState(false);
+
   const route = useRoute();
   const {newOrders, customer} = route.params;
   const [locksmiths, setLocksmiths] = useState(null);
-  const baseUrl =
-    Platform.OS === 'ios'
-      ? 'http://localhost:3000'
-      : 'https://d25c-2001-ee0-4fc4-af90-e187-11b6-a37a-c15c.ap.ngrok.io';
 
   const getUser = async () => {
     const idlocksmith = user.uid;
@@ -50,6 +47,9 @@ export default function OrderDetail() {
         console.log(locksmiths);
       });
   };
+  function onPress() {
+    setModalVisible(!modalVisible);
+  }
 
   useEffect(() => {
     getUser();
@@ -58,8 +58,8 @@ export default function OrderDetail() {
     <ScrollView>
       <View
         style={{
-          height: SIZE.HEIGHT,
-          width: SIZE.WIDTH,
+          height: SIZES.height,
+          width: SIZES.width,
           padding: 20,
           marginTop: Platform.OS == 'ios' ? 40 : 20,
           backgroundColor: ' blue',
@@ -68,7 +68,7 @@ export default function OrderDetail() {
         <View
           style={{
             width: '100%',
-            height: SIZE.HEIGHT * 0.1,
+            height: SIZES.height * 0.1,
             backgroundColor: '#ffffff',
             borderRadius: 10,
 
@@ -174,30 +174,37 @@ export default function OrderDetail() {
 
         <View>
           <Pressable
-            onPress={() =>
-              navigation.navigate('Order', {
-                dataOrder: newOrders,
-                locksmith: locksmiths,
-                customer: customer,
-              })
-            }
+            // onPress={() =>
+            //   navigation.navigate('Order', {
+            //     dataOrder: newOrders,
+            //     locksmith: locksmiths,
+            //     customer: customer,
+            //   })
+            // }
             // onPress={() => console.log('presssssss')}
-            style={{
-              width: SIZE.WIDTH * 0.9,
-              height: 60,
-              backgroundColor: 'blue',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginVertical: 40,
-            }}>
+            onPress={onPress}
+            style={styles.btn}>
             <Text style={{fontSize: 24, color: '#ffffff', fontWeight: '700'}}>
-              Bắt Đầu
+              GỬI BÁO GIÁ
             </Text>
           </Pressable>
         </View>
       </View>
+      <ModalDealCost
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  btn: {
+    width: SIZES.width * 0.9,
+    height: 60,
+    backgroundColor: 'blue',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 40,
+  },
+});

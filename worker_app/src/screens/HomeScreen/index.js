@@ -26,6 +26,9 @@ import Geolocation from '@react-native-community/geolocation';
 import AppContext from '../../navigator/AppContext';
 import BottomView from '../../components/HomeComponents/BottomView';
 import {URL_DEVICE} from '@env';
+import {baseUrl} from '../../contains/url';
+import ModalOrder from '../../components/HomeComponents/ModalOrder';
+import ModalDealCost from '../../components/OrderComponents/ModalDealCost';
 
 const origin = {latitude: 10.82313, longitude: 106.688829};
 const destination = {latitude: 10.82213, longitude: 106.686829};
@@ -45,10 +48,6 @@ const HomeScreen = () => {
   const [newOrders, setNewOrders] = useState([]);
 
   const {user} = useContext(AppContext);
-  const baseUrl =
-    Platform.OS === 'ios'
-      ? 'http://localhost:3000'
-      : 'https://d25c-2001-ee0-4fc4-af90-e187-11b6-a37a-c15c.ap.ngrok.io';
 
   const onPressActive = () => {
     setIsActive(!isActive);
@@ -129,8 +128,8 @@ const HomeScreen = () => {
   async function getOrder() {
     const source = axios.CancelToken.source();
 
-    const idCustomer = user.uid;
-    const url = `${baseUrl}/order/pendingOrder/${idCustomer}`;
+    const idLockSmith = user.uid;
+    const url = `${baseUrl}/order/pendingOrder/${idLockSmith}`;
     // console.log('waiting get order !!!!!!!!!');
 
     await axios
@@ -139,6 +138,7 @@ const HomeScreen = () => {
         setNewOrders(value.data.data);
         getCustomer();
         setModalVisible(true);
+        console.log(newOrders[0].type);
         return;
       })
       .catch(e => {
@@ -146,7 +146,7 @@ const HomeScreen = () => {
       });
   }
 
-  // useInterval(getOrder, 4000);
+  // useInterval(getOrder, 2000);
 
   return (
     <View style={styles.container}>
@@ -193,36 +193,14 @@ const HomeScreen = () => {
 
       <BottomView isActive={isActive} onPress={onPressActive} />
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}>
-        {customer && (
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Bạn có một đơn mới !</Text>
-              <Text style={styles.modalText}>Khach Hang : {customer.name}</Text>
-              <Text style={styles.modalText}></Text>
-
-              <View style={{flexDirection: 'row'}}>
-                <Pressable
-                  style={[styles.button]}
-                  onPress={() => setModalVisible(!modalVisible)}>
-                  <Text style={styles.textStyle}>Từ Chối</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => onAccept()}>
-                  <Text style={styles.textStyle}>Chấp Nhận</Text>
-                </Pressable>
-              </View>
-            </View>
-          </View>
-        )}
-      </Modal>
+      {newOrders.length > 0 && (
+        <ModalOrder
+          setModalVisible={setModalVisible}
+          modalVisible={modalVisible}
+          newOrders={newOrders[0]}
+          onAccept={onAccept}
+        />
+      )}
     </View>
   );
 };

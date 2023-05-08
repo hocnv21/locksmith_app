@@ -20,6 +20,7 @@ import {
 } from 'react-native-confirmation-code-field';
 import PhoneInput from 'react-native-phone-number-input';
 import auth from '@react-native-firebase/auth';
+
 import firestore from '@react-native-firebase/firestore';
 
 import {TextInput} from 'react-native-paper';
@@ -31,6 +32,7 @@ import Logo_Login from '../../components/LoginComponents/Logo_Login';
 import CustomButton from '../../components/LoginComponents/CustomButton';
 import LoginPhone from '../../components/LoginComponents/LoginPhone';
 import OTPScreen from '../OTPScreen/OTPScreen';
+import {firebase} from '@react-native-firebase/auth';
 
 const CELL_COUNT = 6;
 
@@ -65,9 +67,13 @@ export default function LoginScreen({navigation}) {
     setValid(checkValid ? checkValid : false);
     if (checkValid) {
       const confirmation = await auth().signInWithPhoneNumber(formattedValue);
+
       setConfirm(confirmation);
       confirm !== null
-        ? navigation.navigate('OTPScreen', {confirm: confirm})
+        ? navigation.navigate('OTPScreen', {
+            confirm: confirm,
+            phoneNumber: formattedValue,
+          })
         : null;
       // navigation.navigate('OTPScreen', {confirm: confirmation});
     } else {
@@ -79,16 +85,6 @@ export default function LoginScreen({navigation}) {
   const handleRegister = () => {
     navigation.navigate('Register');
   };
-  // function onAuthStateChanged(user) {
-  //   if (user) {
-  //     // Some Android devices can automatically process the verification code (OTP) message, and the user would NOT need to enter the code.
-  //     // Actually, if he/she tries to enter it, he/she will get an error message because the code was already used in the background.
-  //     // In this function, make sure you hide the component(s) for entering the code and/or navigate away from this screen.
-  //     // It is also recommended to display a message to the user informing him/her that he/she has successfully logged in.
-  //     console.log(user);
-  //     navigation.navigate('Test');
-  //   }
-  // }
 
   // useEffect(() => {
   //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -103,7 +99,15 @@ export default function LoginScreen({navigation}) {
 
   async function confirmCode(code) {
     try {
-      if (code.length === 6) await confirm.confirm(code);
+      if (code.length === 6) {
+        const credential = auth.PhoneAuthProvider.credential(
+          confirm.verificationId,
+          code,
+        );
+        console.log('credential' + JSON.stringify(credential));
+        await auth().signInWithCredential(credential);
+      }
+      // const credential = auth.PhoneAuthProvider.credential(confirm.verificationId,code)
     } catch (error) {
       console.log('Invalid code.');
     }
@@ -139,7 +143,6 @@ export default function LoginScreen({navigation}) {
                 valid={valid}
                 setValid={setValid}
                 phoneInput={phoneInput}
-                signInWithPhoneNumber={signInWithPhoneNumber}
               />
 
               <CustomButton

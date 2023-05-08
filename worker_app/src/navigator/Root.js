@@ -38,16 +38,7 @@ const StackAuth = () => {
         component={RegisterScreen}
         options={{headerShown: false}}
       />
-      <Stack.Screen
-        name="OTPScreen"
-        component={OTPScreen}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Test"
-        component={Test}
-        options={{headerShown: false}}
-      />
+      <Stack.Screen name="OTPScreen" component={OTPScreen} />
     </Stack.Navigator>
   );
 };

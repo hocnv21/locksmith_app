@@ -1,37 +1,49 @@
-import React from 'react';
-import {Dimensions, View, StyleSheet, Text, ScrollView} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Dimensions,
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  Pressable,
+  Platform,
+  Image,
+  TouchableOpacity,
+  PixelRatio,
+} from 'react-native';
 
 import HomeMap from '../../components/HomeMap';
 import HomeSearch from '../../components/HomeSearch';
-import {SIZES} from '../../contains/theme';
+import {COLORS, SIZES} from '../../contains/theme';
+import {useNavigation} from '@react-navigation/native';
 // import SloganMessage from '../../components/SloganMessage';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AppBar from '../../components/Appbar/AppBar';
+import category from '../../assets/data/category';
+import ServiceItem from '../../components/HomeComponents/ServiceItem';
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
+  const [typeLock, setTypeLock] = useState('');
+  function handlePressItem() {
+    // navigation.navigate('FormInput', {typeLock: value.type});
+  }
   return (
-    <ScrollView>
-      <View>
-        <View style={{height: SIZES.height * 0.6}}>
-          <HomeMap />
-        </View>
-
-        {/* Slogan message */}
-        <View style={{height: SIZES.height * 0.4}}>
-          <View style={styles.container}>
-            <Text style={styles.title}>
-              Chắc chắn, trung thực và đáng tin cậy
-            </Text>
-            <Text style={styles.text}>
-              Cam kết của chúng tôi về chất lượng đã khiến chúng tôi trở thành
-              người dẫn đầu thị trường.
-            </Text>
-            <Text style={styles.learnMore}>Xem thêm</Text>
+    <>
+      <AppBar rightText={'Xin chào, Nguyễn Viết Học'} />
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.textHeader}>Bạn đang tìm dịch vụ gì nè ? </Text>
           </View>
-
-          {/* Bottom comp */}
-          <HomeSearch />
+          <View style={styles.content}>
+            {category.map((value, index) => (
+              <ServiceItem key={index} value={value} />
+            ))}
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 };
 
@@ -39,25 +51,30 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#1065e9',
-    padding: 15,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    // padding: 10,
+    // marginTop: Platform.OS === 'ios' ? 45 : 0,
+    backgroundColor: COLORS.background,
+    height: SIZES.height,
+    width: SIZES.width,
   },
-  title: {
-    marginBottom: 10,
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
+  header: {
+    padding: 10,
+    height: SIZES.height * 0.13,
+
+    // backgroundColor: '#000000',
   },
-  text: {
-    color: '#bed9ff',
-    fontSize: 15,
-    marginBottom: 10,
+  textHeader: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#ffffff',
   },
-  learnMore: {
-    color: '#fff',
-    fontSize: 15,
-    fontWeight: 'bold',
+  content: {
+    // marginBottom: 20,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    padding: 10,
+    height: SIZES.height * 0.87,
+    width: SIZES.width,
+    backgroundColor: '#ffffff',
   },
 });

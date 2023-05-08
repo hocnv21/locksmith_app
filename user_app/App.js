@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import 'react-native-gesture-handler';
 import Geolocation from '@react-native-community/geolocation';
-import Navigator from './src/navigator/Navigator';
+
 import Router from './src/navigator/Root';
 
 navigator.geolocation = require('@react-native-community/geolocation');

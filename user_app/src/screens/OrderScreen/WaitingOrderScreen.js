@@ -23,7 +23,7 @@ export default function WaitingOrderScreen() {
   };
   const route = useRoute();
   const navigation = useNavigation();
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const {idCustomer} = route.params;
   // const baseUrl =
@@ -39,7 +39,7 @@ export default function WaitingOrderScreen() {
       .get(url)
       .then(value => {
         setData(value.data.data);
-        // navigation.navigate('OrderScreen', {data: value.data});
+
         setIsLoading(false);
         return;
       })
@@ -48,7 +48,7 @@ export default function WaitingOrderScreen() {
       });
   }
 
-  useInterval(getOrder, 3000);
+  // useInterval(getOrder, 2000);
 
   if (data) {
     navigation.navigate('Order', {data: data});

@@ -1,60 +1,79 @@
-import {Image, Platform} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import {
+  Image,
+  View,
+  Platform,
+  StyleSheet,
+  Pressable,
+  PixelRatio,
+} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
 import MapView, {
   Marker,
   PROVIDER_DEFAULT,
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
+import Entypo from 'react-native-vector-icons/Entypo';
+import {useNavigation} from '@react-navigation/native';
+import {ICONS, SIZES} from '../../contains/theme';
 
 const HomeMap = () => {
-  const [locksmiths, setLocksmiths] = useState([]);
-
-  const getImage = type => {
-    if (type === 'Home') {
-      return require('../../assets/images/map-home.png');
-    }
-    if (type === 'Vehicle') {
-      return require('../../assets/images/map-car.png');
-    }
-    return require('../../assets/images/map-elec.png');
-  };
+  const mapRef = useRef(null);
+  const navigation = useNavigation();
+  const [coordinate, setCoordinate] = useState();
 
   return (
-    <MapView
-      style={{left: 0, right: 0, top: 0, bottom: 0, position: 'absolute'}}
-      // provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
-      provider={PROVIDER_GOOGLE}
-      showsUserLocation={true}
-      initialRegion={{
-        latitude: 10.82213,
-        longitude: 106.686829,
-        latitudeDelta: 0.0222,
-        longitudeDelta: 0.0121,
-      }}>
-      {locksmiths.map(locksmith => (
-        <Marker
-          key={locksmith.id}
-          coordinate={{
-            latitude: locksmith.latitude,
-            longitude: locksmith.longitude,
-          }}>
-          <Image
-            style={{
-              width: 35,
-              height: 35,
-              resizeMode: 'contain',
-              // transform: [
-              //   {
-              //     rotate: `${locksmith.heading}deg`,
-              //   },
-              // ],
-            }}
-            source={getImage(locksmith.type)}
-          />
-        </Marker>
-      ))}
-    </MapView>
+    <View style={styles.container}>
+      <Pressable
+        onPress={() => navigation.openDrawer()}
+        style={styles.roundButton}>
+        <Entypo name="menu" size={28} color={'#4a4a4a'} />
+      </Pressable>
+      <Image style={styles.marker} source={ICONS.marker} />
+      <MapView
+        ref={mapRef}
+        style={{width: '100%', height: '100%'}}
+        // provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
+        provider={PROVIDER_GOOGLE}
+        showsUserLocation={true}
+        initialRegion={{
+          latitude: 10.82213,
+          longitude: 106.686829,
+          latitudeDelta: 0.0222,
+          longitudeDelta: 0.0121,
+        }}
+        onRegionChangeComplete={region => {
+          // setCoordinate(region);
+
+          console.log(region);
+        }}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width: SIZES.width,
+    height: SIZES.height,
+  },
+  marker: {
+    resizeMode: 'contain',
+    position: 'absolute',
+    zIndex: 1,
+    top: SIZES.height / 2 - PixelRatio.getPixelSizeForLayoutSize(7.5),
+    left: SIZES.width / 2 - PixelRatio.getPixelSizeForLayoutSize(7.5),
+    width: PixelRatio.getPixelSizeForLayoutSize(15),
+    height: PixelRatio.getPixelSizeForLayoutSize(15),
+  },
+  roundButton: {
+    zIndex: 1,
+    position: 'absolute',
+    top: Platform.OS === 'ios' ? 40 : 10,
+    left: 10,
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 50,
+  },
+});
 
 export default HomeMap;

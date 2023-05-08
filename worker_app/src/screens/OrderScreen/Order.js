@@ -36,7 +36,7 @@ export default function Order() {
       setCurrentLatitude(position.coords.latitude);
       setCurrentLongitude(position.coords.longitude);
     },
-    error => this.setState({error: error.message}),
+    error => console.log(error.message),
     {
       enableHighAccuracy: true,
       timeout: 200000,
@@ -60,12 +60,12 @@ export default function Order() {
     },
   );
 
-  // useEffect(() => {
-  //   const lat = locksmith?.location.coordinates[1];
-  //   const long = locksmith?.location.coordinates[0];
-  //   setCurrentLatitude(lat);
-  //   setCurrentLongitude(long);
-  // }, [currentLatitude, locksmith?.location.coordinates]);
+  useEffect(() => {
+    const lat = locksmith?.location.coordinates[1];
+    const long = locksmith?.location.coordinates[0];
+    setCurrentLatitude(lat);
+    setCurrentLongitude(long);
+  }, [currentLatitude, locksmith?.location.coordinates]);
 
   if (currentLongitude === '') {
     return (

@@ -23,6 +23,7 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyDvH3f3z8eYs8Q-IolL2xJIshzQgjuQnV8';
 const {width, height} = Dimensions.get('window');
 
 const RouteMap = ({origin, dataLocksmith}) => {
+  // const mapRef = useRef(null);
   const originLoc = {
     latitude: origin.details.geometry.location.lat,
     longitude: origin.details.geometry.location.lng,
@@ -51,6 +52,7 @@ const RouteMap = ({origin, dataLocksmith}) => {
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef => (mapRef === null ? null : mapRef.fitToElements(true))}
         initialRegion={state.region}
         style={styles.map}
         provider={PROVIDER_GOOGLE}>

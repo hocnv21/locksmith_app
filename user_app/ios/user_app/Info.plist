@@ -21,6 +21,7 @@
 			<string>SimpleLineIcons.ttf</string>
 			<string>Zocial.ttf</string>
 		</array>
+
 		<key>CFBundleDevelopmentRegion</key>
 		<string>en</string>
 		<key>CFBundleDisplayName</key>
