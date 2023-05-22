@@ -1,12 +1,22 @@
-import {View, Text, Pressable} from 'react-native';
-import React from 'react';
+import {View, Text, Pressable, Image} from 'react-native';
+import React, {useContext, useEffect} from 'react';
 import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
 import auth from '@react-native-firebase/auth';
+import {getIncome, getLocksmith} from '../Api/RestFullApi';
+import AppContext from './AppContext';
+import {useState} from 'react';
 
 const CustomDrawer = props => {
+  const {user} = useContext(AppContext);
+  const [cost, setCost] = useState(null);
+
+  useEffect(() => {
+    getIncome(user._id, setCost, 'Day');
+  }, []);
+
   const signOut = async () => {
     console.log('signing out');
     auth()
@@ -20,18 +30,20 @@ const CustomDrawer = props => {
     <DrawerContentScrollView {...props}>
       <View style={{backgroundColor: '#1065e9', padding: 15}}>
         {/* User Row */}
+
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <View
+          <Image
             style={{
-              backgroundColor: '#cacaca',
+              resizeMode: 'cover',
               width: 40,
               height: 40,
               borderRadius: 50,
               marginRight: 15,
             }}
+            source={{uri: user.image}}
           />
           <View>
-            <Text style={{color: 'white', fontSize: 20}}>Nguyễn Phi Hoàng</Text>
+            <Text style={{color: 'white', fontSize: 20}}>{user.name}</Text>
             <Text style={{color: 'lightgrey'}}>5.00 *</Text>
           </View>
         </View>
@@ -45,23 +57,19 @@ const CustomDrawer = props => {
             paddingVertical: 5,
             marginVertical: 10,
           }}>
-          <Pressable
-            onPress={() => {
-              console.warn('Tạo tin nhắn');
-            }}>
-            <Text style={{color: '#ffffff', paddingVertical: 5}}>Tin nhắn</Text>
-          </Pressable>
+          {cost && (
+            <Pressable>
+              <Text style={{color: '#ffffff', paddingVertical: 5}}>
+                Thu nhập hôm nay:
+                {new Intl.NumberFormat({
+                  style: 'currency',
+                  currency: 'VND',
+                }).format(cost[0].sum)}
+                .000đ
+              </Text>
+            </Pressable>
+          )}
         </View>
-
-        {/* Do more */}
-        <Pressable
-          onPress={() => {
-            console.warn('Cài đặt tài khoản');
-          }}>
-          <Text style={{color: '#ffffff', paddingVertical: 5}}>
-            Cài đặt tài khoản
-          </Text>
-        </Pressable>
 
         {/* Make money */}
         <Pressable

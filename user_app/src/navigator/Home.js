@@ -10,6 +10,7 @@ import OrderScreen from '../screens/OrderScreen/OrderScreen';
 import SearchPlace from '../screens/FormInputOrder/SearchPlace';
 import FormInput from '../screens/FormInputOrder/FormInput';
 import ChosseLocationScreen from '../screens/FormInputOrder/ChosseLocationScreen';
+import AccountScreen from '../screens/AccountScreen/AccountScreen';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,7 @@ const HomeNavigator = () => {
       <Stack.Screen name={'SearchResults'} component={SearchResults} />
       <Stack.Screen name={'WaitingOrder'} component={WaitingOrderScreen} />
       <Stack.Screen name={'Order'} component={OrderScreen} />
+      <Stack.Screen name={'Account'} component={AccountScreen} />
     </Stack.Navigator>
   );
 };

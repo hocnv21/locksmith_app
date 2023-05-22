@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, useColorScheme, Text} from 'react-native';
+import {View, useColorScheme, Text, Platform} from 'react-native';
 import {
   NavigationContainer,
   DefaultTheme,
@@ -13,6 +13,15 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomDrawer from './CustomDrawer';
 import LoginScreen from '../screens/LoginScreen/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen/RegisterScreen';
+import messaging from '@react-native-firebase/messaging';
+
+import firestore from '@react-native-firebase/firestore';
+import OTPScreen from '../screens/OTPScreen/OTPScreen';
+import {getCustomer} from '../API/RestFullApi';
+import AccountScreen from '../screens/AccountScreen/AccountScreen';
+import AccountNavigator from './Account';
+import SupportNavigator from './Support';
+import OrderHistoryNavigator from './OrderHistoryNavigator';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -34,6 +43,7 @@ const StackAuth = () => {
         component={RegisterScreen}
         options={{headerShown: false}}
       />
+      <Stack.Screen name="OTPScreen" component={OTPScreen} />
     </Stack.Navigator>
   );
 };
@@ -49,21 +59,21 @@ const StackHome = () => {
 
       <Drawer.Screen
         name={'Đơn sửa khóa của bạn'}
-        options={{headerShown: false}}>
-        {() => <DummyScreen name={'Đơn sửa khóa của bạn'} />}
-      </Drawer.Screen>
+        options={{headerShown: false}}
+        component={OrderHistoryNavigator}
+      />
 
-      <Drawer.Screen name={'Trợ giúp'} options={{headerShown: false}}>
-        {() => <DummyScreen name={'Trợ giúp'} />}
-      </Drawer.Screen>
+      <Drawer.Screen
+        name={'Trợ giúp'}
+        component={SupportNavigator}
+        options={{headerShown: false}}
+      />
 
-      <Drawer.Screen name={'Ví'} options={{headerShown: false}}>
-        {() => <DummyScreen name={'Ví'} />}
-      </Drawer.Screen>
-
-      <Drawer.Screen name={'Cài đặt'} options={{headerShown: false}}>
-        {() => <DummyScreen name={'Cài đặt'} />}
-      </Drawer.Screen>
+      <Drawer.Screen
+        name={'Cài đặt'}
+        component={AccountNavigator}
+        options={{headerShown: false}}
+      />
     </Drawer.Navigator>
   );
 };
@@ -75,8 +85,17 @@ const RootNavigator = () => {
 
   // Handle user state changes
   function onAuthStateChanged(user) {
-    setUser(user);
-    if (initializing) setInitializing(false);
+    if (user) {
+      setTimeout(() => {
+        getCustomer(user.uid, setUser);
+      }, 2000);
+    } else {
+      setUser(user);
+    }
+
+    if (initializing) {
+      setInitializing(false);
+    }
   }
 
   useEffect(() => {

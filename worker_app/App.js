@@ -8,6 +8,9 @@ import {
 } from 'react-native';
 import 'react-native-gesture-handler';
 import Geolocation from '@react-native-community/geolocation';
+import messaging from '@react-native-firebase/messaging';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 import Router from './src/navigator/Root';
 navigator.geolocation = require('@react-native-community/geolocation');

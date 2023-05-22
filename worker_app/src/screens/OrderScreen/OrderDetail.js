@@ -9,6 +9,7 @@ import {
   Pressable,
   Button,
   ScrollView,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import AppContext from '../../navigator/AppContext';
@@ -17,6 +18,7 @@ import axios from 'axios';
 import {baseUrl} from '../../contains/url';
 import {SIZES} from '../../contains';
 import ModalDealCost from '../../components/OrderComponents/ModalDealCost';
+import messaging from '@react-native-firebase/messaging';
 
 export default function OrderDetail() {
   const navigation = useNavigation();
@@ -26,9 +28,10 @@ export default function OrderDetail() {
   const route = useRoute();
   const {newOrders, customer} = route.params;
   const [locksmiths, setLocksmiths] = useState(null);
+  const [valueCost, setValueCost] = useState('');
 
   const getUser = async () => {
-    const idlocksmith = user.uid;
+    const idlocksmith = user._id;
 
     const source = axios.CancelToken.source();
 
@@ -48,8 +51,49 @@ export default function OrderDetail() {
       });
   };
   function onPress() {
+    console.log('pressss');
     setModalVisible(!modalVisible);
   }
+  const onSubmit = async () => {
+    const configurationObject = {
+      url: `${baseUrl}/notification/dealCost`,
+      method: 'POST',
+      data: {
+        customerId: newOrders.customer_id,
+        cost: valueCost,
+      },
+    };
+    await axios(configurationObject)
+      .then(response => {
+        if (response.status === 201) {
+          // alert(` You have updated: ${JSON.stringify(response.data)}`);
+          console.log('success push noti');
+          setModalVisible(false);
+          Alert.alert('Bạn đã gửi báo giá thành công');
+        } else {
+          throw new Error('An error has occurred');
+        }
+      })
+      .catch(error => {
+        alert('An error has occurred');
+      });
+  };
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      if (remoteMessage.data.status === 'true') {
+        navigation.navigate('Order', {
+          dataOrder: newOrders,
+          locksmith: locksmiths,
+          customer: customer,
+        });
+      } else {
+        navigation.navigate('HomeScreen');
+      }
+    });
+
+    return unsubscribe;
+  }, [customer, locksmiths, navigation, newOrders]);
 
   useEffect(() => {
     getUser();
@@ -173,17 +217,7 @@ export default function OrderDetail() {
         {/* Button */}
 
         <View>
-          <Pressable
-            // onPress={() =>
-            //   navigation.navigate('Order', {
-            //     dataOrder: newOrders,
-            //     locksmith: locksmiths,
-            //     customer: customer,
-            //   })
-            // }
-            // onPress={() => console.log('presssssss')}
-            onPress={onPress}
-            style={styles.btn}>
+          <Pressable onPress={() => onPress()} style={styles.btn}>
             <Text style={{fontSize: 24, color: '#ffffff', fontWeight: '700'}}>
               GỬI BÁO GIÁ
             </Text>
@@ -193,6 +227,9 @@ export default function OrderDetail() {
       <ModalDealCost
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        valueCost={valueCost}
+        setValueCost={setValueCost}
+        onSubmit={onSubmit}
       />
     </ScrollView>
   );

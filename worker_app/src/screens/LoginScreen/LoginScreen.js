@@ -33,6 +33,8 @@ import CustomButton from '../../components/LoginComponents/CustomButton';
 import LoginPhone from '../../components/LoginComponents/LoginPhone';
 import OTPScreen from '../OTPScreen/OTPScreen';
 import {firebase} from '@react-native-firebase/auth';
+import axios from 'axios';
+import {baseUrl} from '../../contains/url';
 
 const CELL_COUNT = 6;
 
@@ -59,25 +61,55 @@ export default function LoginScreen({navigation}) {
   const [valid, setValid] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showMessage, setShowMessage] = useState(false);
+  const [statusMessage, setStatusMessage] = useState(false);
   const phoneInput = useRef(null);
+
+  async function getExitsUser(phone) {
+    const url = `${baseUrl}/locksmith/phoneNumber/${phone}`;
+    // console.log('waiting get order !!!!!!!!!');
+    const result = await axios
+      .get(url)
+      .then(response => {
+        if (response.status === 404) {
+          setStatusMessage(false);
+          return false;
+        } else {
+          setStatusMessage(true);
+          return true;
+        }
+      })
+      .catch(e => {
+        console.log('err get ' + e);
+      });
+
+    return result;
+  }
 
   const onHandleLogin = async () => {
     const checkValid = phoneInput.current?.isValidNumber(phoneNumber);
 
     setValid(checkValid ? checkValid : false);
     if (checkValid) {
-      const confirmation = await auth().signInWithPhoneNumber(formattedValue);
+      console.log(formattedValue.replace('0', ''));
+      const phoneFormat = formattedValue.replace('0', '');
+      const kq = await getExitsUser(phoneFormat);
+      if (kq) {
+        console.log('yes');
 
-      setConfirm(confirmation);
-      confirm !== null
-        ? navigation.navigate('OTPScreen', {
-            confirm: confirm,
-            phoneNumber: formattedValue,
-          })
-        : null;
-      // navigation.navigate('OTPScreen', {confirm: confirmation});
+        const confirmation = await auth().signInWithPhoneNumber(formattedValue);
+        setConfirm(confirmation);
+        console.log(formattedValue);
+        // confirm !== null
+        //   ? navigation.navigate('OTPScreen', {
+        //       confirm: confirm,
+        //       phoneNumber: formattedValue,
+        //     })
+        //   : null;
+      } else {
+        console.log('noo');
+        setShowMessage(true);
+      }
     } else {
-      console.log(formattedValue);
       setShowMessage(true);
     }
   };
@@ -105,14 +137,15 @@ export default function LoginScreen({navigation}) {
           code,
         );
         console.log('credential' + JSON.stringify(credential));
-        await auth().signInWithCredential(credential);
+        const result = await auth().signInWithCredential(credential);
+        console.log('login dang nhap ' + JSON.stringify(result.user.uid));
       }
       // const credential = auth.PhoneAuthProvider.credential(confirm.verificationId,code)
     } catch (error) {
       console.log('Invalid code.');
     }
   }
-  if (!confirm) {
+  if (confirm == null) {
     return (
       <ScrollView>
         <KeyboardAvoidingView
@@ -124,10 +157,10 @@ export default function LoginScreen({navigation}) {
           <View style={styles.bottom}>
             <View style={styles.form}>
               <View style={styles.welcom}>
-                <Text style={styles.h1}>Welcome</Text>
+                <Text style={styles.h1}>Chào mừng bạn</Text>
                 <Pressable_line
-                  textStart={"Don't have an account?"}
-                  textPressable={'Register now'}
+                  textStart={'Bạn chưa có tài khoản?'}
+                  textPressable={'Đăng ký ngay'}
                   onPress={handleRegister}
                 />
               </View>
@@ -135,6 +168,7 @@ export default function LoginScreen({navigation}) {
               <Text>Số điện thoại</Text>
               <LoginPhone
                 showMessage={showMessage}
+                statusMessage={statusMessage}
                 setShowMessage={setShowMessage}
                 phoneNumber={phoneNumber}
                 setPhoneNumber={setPhoneNumber}
@@ -142,12 +176,13 @@ export default function LoginScreen({navigation}) {
                 setFormattedValue={setFormattedValue}
                 valid={valid}
                 setValid={setValid}
+                stateScreen={'login'}
                 phoneInput={phoneInput}
               />
 
               <CustomButton
                 onPress={onHandleLogin}
-                title="login"
+                title="Đăng nhập"
                 disabled={!email || !password}
                 type="PRIMARY"
               />
@@ -160,7 +195,7 @@ export default function LoginScreen({navigation}) {
 
   return (
     <>
-      <OTPScreen confirmCode={confirmCode} />
+      <OTPScreen phoneNumber={formattedValue} confirmCode={confirmCode} />
     </>
   );
 }

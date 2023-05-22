@@ -17,6 +17,10 @@ import RegisterScreen from '../screens/RegisterScreen/RegisterScreen';
 import ConfirmCodeScreen from '../screens/LoginScreen/ConfirmCodeScreen';
 import Test from '../screens/LoginScreen/Test';
 import OTPScreen from '../screens/OTPScreen/OTPScreen';
+import {getLocksmith} from '../Api/RestFullApi';
+import AccountNavigator from './Account';
+import SupportNavigator from './Support';
+import IncomeNavigator from './IncomeNavigator';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -53,22 +57,24 @@ const StackHome = () => {
       />
 
       <Drawer.Screen
-        name={'Đơn sửa khóa của bạn'}
-        options={{headerShown: false}}>
-        {() => <DummyScreen name={'Đơn sửa khóa của bạn'} />}
-      </Drawer.Screen>
+        name={'Thu nhập của bạn'}
+        options={{headerShown: false}}
+        component={IncomeNavigator}></Drawer.Screen>
 
-      <Drawer.Screen name={'Trợ giúp'} options={{headerShown: false}}>
-        {() => <DummyScreen name={'Trợ giúp'} />}
-      </Drawer.Screen>
+      <Drawer.Screen
+        name={'Trợ giúp'}
+        options={{headerShown: false}}
+        component={SupportNavigator}></Drawer.Screen>
 
       <Drawer.Screen name={'Ví'} options={{headerShown: false}}>
         {() => <DummyScreen name={'Ví'} />}
       </Drawer.Screen>
 
-      <Drawer.Screen name={'Cài đặt'} options={{headerShown: false}}>
-        {() => <DummyScreen name={'Cài đặt'} />}
-      </Drawer.Screen>
+      <Drawer.Screen
+        name={'Cài đặt'}
+        component={AccountNavigator}
+        options={{headerShown: false}}
+      />
     </Drawer.Navigator>
   );
 };
@@ -80,12 +86,21 @@ const RootNavigator = () => {
   const [user, setUser] = useState();
 
   // Handle user state changes
-  function onAuthStateChanged(user) {
-    console.log(JSON.stringify(user));
-    setAutheticated(true);
-    setUser(user);
+  function onAuthStateChanged(users) {
+    if (users) {
+      setTimeout(() => {
+        getLocksmith(users.uid, setUser);
+      }, 2000);
+    } else {
+      setUser(users);
+    }
 
-    if (initializing) setInitializing(false);
+    // setAutheticated(true);
+    // setUser(user);
+
+    if (initializing) {
+      setInitializing(false);
+    }
   }
 
   useEffect(() => {

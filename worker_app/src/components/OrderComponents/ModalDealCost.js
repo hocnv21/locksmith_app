@@ -12,8 +12,13 @@ import {COLORS} from '../../contains';
 import {shadowView} from '../../contains/theme';
 import {useState} from 'react';
 
-export default function ModalDealCost({modalVisible, setModalVisible}) {
-  const [value, setValue] = useState('');
+export default function ModalDealCost({
+  modalVisible,
+  setModalVisible,
+  valueCost,
+  setValueCost,
+  onSubmit,
+}) {
   return (
     <Modal
       animationType="slide"
@@ -31,7 +36,7 @@ export default function ModalDealCost({modalVisible, setModalVisible}) {
                 {new Intl.NumberFormat({
                   style: 'currency',
                   currency: 'VND',
-                }).format(value)}
+                }).format(valueCost)}
               </Text>
               <Text style={styles.textCost}>.000 VND</Text>
             </View>
@@ -40,12 +45,15 @@ export default function ModalDealCost({modalVisible, setModalVisible}) {
             <TextInput
               inputMode="numeric"
               keyboardType="numeric"
-              onChangeText={text => setValue(text)}
+              onChangeText={text => setValueCost(text)}
               autoFocus={true}
             />
           </View>
 
-          <TouchableOpacity disabled={value.length < 2} style={styles.btn}>
+          <TouchableOpacity
+            onPress={() => onSubmit()}
+            disabled={valueCost.length < 2}
+            style={styles.btn}>
             <Text style={styles.textBtn}>GỬI</Text>
           </TouchableOpacity>
         </View>

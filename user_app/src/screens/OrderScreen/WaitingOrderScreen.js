@@ -32,15 +32,13 @@ export default function WaitingOrderScreen() {
   async function getOrder() {
     const source = axios.CancelToken.source();
     const url = `${baseUrl}/order/orderWorking/${idCustomer}`;
-    console.log('waiting get order !!!!!!!!!');
 
     setIsLoading(true);
     await axios
       .get(url)
       .then(value => {
-        setData(value.data.data);
-
-        setIsLoading(false);
+        navigation.navigate('Order', {data: value.data.data});
+        // setData(value.data.data);
         return;
       })
       .catch(e => {
@@ -48,11 +46,11 @@ export default function WaitingOrderScreen() {
       });
   }
 
-  // useInterval(getOrder, 2000);
+  useInterval(getOrder, 2000);
 
-  if (data) {
-    navigation.navigate('Order', {data: data});
-  }
+  // if (data !== null) {
+  //   navigation.navigate('Order', {data: data});
+  // }
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <ActivityIndicator />

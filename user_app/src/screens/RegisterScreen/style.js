@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: SIZES.height,
     padding: 20,
-    backgroundColor: COLORS.violet,
+    backgroundColor: COLORS.background,
   },
   logo: {
     width: '70%',

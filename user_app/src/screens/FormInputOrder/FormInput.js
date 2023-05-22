@@ -216,14 +216,12 @@ export default function FormInput() {
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             listURL.push({id: Math.random() * 10, uri: downloadURL});
-            console.log('length List URL' + JSON.stringify(listURL[0]));
           });
         },
       );
     });
   }
   async function onPressSubmit() {
-    console.log('press');
     await getListUriAndUpLoad(filePath);
 
     navigation.navigate('SearchPlace', {

@@ -1,13 +1,16 @@
-import {View, Text, Pressable} from 'react-native';
-import React from 'react';
+import {View, Text, Pressable, TouchableOpacity, Image} from 'react-native';
+import React, {useContext} from 'react';
 import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
 
 import auth from '@react-native-firebase/auth';
+import AppContext from './AppContext';
 
 const CustomDrawer = props => {
+  const {user} = useContext(AppContext);
+
   const signOut = async () => {
     console.log('signing out');
     auth()
@@ -21,10 +24,11 @@ const CustomDrawer = props => {
     <DrawerContentScrollView {...props}>
       <View style={{backgroundColor: '#1065e9', padding: 15}}>
         {/* User Row */}
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <View
+        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Image
+            source={{uri: user.image}}
             style={{
-              backgroundColor: '#cacaca',
+              resizeMode: 'cover',
               width: 40,
               height: 40,
               borderRadius: 50,
@@ -32,47 +36,15 @@ const CustomDrawer = props => {
             }}
           />
           <View>
-            <Text style={{color: 'white', fontSize: 20}}>Nguyễn Phi Hoàng</Text>
-            <Text style={{color: 'lightgrey'}}>5.00 *</Text>
+            <Text style={{color: 'white', fontSize: 20}}>{user.name}</Text>
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Messages Row */}
-        <View
-          style={{
-            borderTopWidth: 0.5,
-            borderBottomWidth: 0.5,
-            borderColor: '#ffffff',
-            paddingVertical: 5,
-            marginVertical: 10,
-          }}>
-          <Pressable
-            onPress={() => {
-              console.warn('Tạo tin nhắn');
-            }}>
-            <Text style={{color: '#ffffff', paddingVertical: 5}}>Tin nhắn</Text>
-          </Pressable>
-        </View>
 
         {/* Do more */}
-        <Pressable
-          onPress={() => {
-            console.warn('Cài đặt tài khoản');
-          }}>
-          <Text style={{color: '#ffffff', paddingVertical: 5}}>
-            Cài đặt tài khoản
-          </Text>
-        </Pressable>
 
         {/* Make money */}
-        <Pressable
-          onPress={() => {
-            console.warn('Nạp tiền vào ví');
-          }}>
-          <Text style={{color: 'white', paddingVertical: 5}}>
-            Nạp tiền vào ví
-          </Text>
-        </Pressable>
       </View>
 
       <DrawerItemList {...props} />

@@ -13,7 +13,8 @@ export const COLORS = {
   black: '#171717',
   blue: '#1495ff',
   white: '#FFFFFF',
-  background: '#252C4A',
+  background: '#1065e9',
+  black_light: '#252C4A',
   jade_green: '#3EB8D4',
   light_gray: 'gray',
 };

@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: SIZES.height,
     padding: 20,
-    backgroundColor: COLORS.violet,
+    backgroundColor: COLORS.background,
   },
   logo: {
     width: '70%',
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     marginVertical: 5,
+    backgroundColor: '#ffffff',
     borderColor: '#e8e8e8',
   },
   login_logo: {
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: COLORS.violet,
   },
-  welcom: {
+  welcome: {
     marginBottom: 20,
   },
   haveAcc: {

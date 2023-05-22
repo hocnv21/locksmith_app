@@ -75,13 +75,13 @@ const SearchResults = props => {
     var date = new Date();
     console.log(date);
 
-    const idCustomer = user.uid;
+    const idCustomer = user._id;
     getArrayId(data);
     setIsLoading(true);
     try {
       const response = await axios.post(`${baseUrl}/order/create`, {
-        customer_id: idCustomer,
-        // customer_name: user.displayName,
+        customer_id: user._id,
+        customer_name: user.name,
         locksmith_accepted_id: '',
         locksmith_ids: idData,
         status: 'pending',
@@ -122,13 +122,13 @@ const SearchResults = props => {
   return (
     <ScrollView>
       <View style={{}}>
-        <View style={{height: Dimensions.get('window').height * 0.9}}>
+        <View style={{height: Dimensions.get('window').height * 0.9 - 30}}>
           <RouteMap origin={originPlace} dataLocksmith={data} />
         </View>
 
         <View
           style={{
-            borderWidth: 1,
+            marginBottom: Platform.OS === 'android' ? 30 : 0,
             height: Dimensions.get('window').height * 0.1,
           }}>
           {/* <LocksmithTypes

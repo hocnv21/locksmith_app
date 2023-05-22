@@ -9,10 +9,6 @@ import {COLORS} from '../../contains';
 export default function BottomView({isActive, onPress}) {
   return (
     <View>
-      <Pressable style={[styles.roundButton, {bottom: 90, right: 10}]}>
-        <Entypo name="message" size={28} color={'#4a4a4a'} />
-      </Pressable>
-
       <Pressable style={[styles.roundButton, {bottom: 90, left: 10}]}>
         <Entypo name="shield" size={28} color={'#1495ff'} />
       </Pressable>
@@ -51,6 +47,7 @@ const styles = StyleSheet.create({
   roundButton: {
     position: 'absolute',
     backgroundColor: 'white',
+
     padding: 10,
     borderRadius: 50,
   },

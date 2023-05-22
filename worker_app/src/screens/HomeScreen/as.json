@@ -1,0 +1,33 @@
+{
+    "additionalUserInfo": {
+        "profile": null,
+        "username": null,
+        "providerId": "phone",
+        "isNewUser": false
+    },
+    "user": {
+        "displayName": null,
+        "multiFactor": {
+            "enrolledFactors": []
+        },
+        "isAnonymous": false,
+        "emailVerified": false,
+        "providerData": [
+            {
+                "providerId": "phone",
+                "phoneNumber": "+84392721261"
+            }
+        ],
+        "uid": "UWUm724EyqR8az5cLLNv57CkbCI3",
+        "email": null,
+        "refreshToken": "APZUo0QzjSZz0L8qQ97Sn7bCwmb3VX1buImPVkZhLna-sR44vINTdhMWSFsX8mn-OJzJAwMd49TdfMcgi-aMh9bdbn5OTkvN3G70V0qd0nhw3SL2ZYUq_YMdjjMOIVZ9Ci00dLpfZ7mdBUe_JoiUJJiRWcix8yiI8aSdR_OYelfDvjEaUu1Z4a73rWleUT7r46nnRV9_tNQ0zz5IUbZM2gZzNxfgQTeowg",
+        "tenantId": null,
+        "phoneNumber": "+84392721261",
+        "photoURL": null,
+        "metadata": {
+            "creationTime": 1681542302825,
+            "lastSignInTime": 1683899141428
+        },
+        "providerId": "firebase"
+    }
+}

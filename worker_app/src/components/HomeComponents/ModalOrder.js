@@ -33,20 +33,6 @@ export default function ModalOrder({
     {viewConfig, viewableItemsChanged},
   ]).current;
 
-  const listImage = [
-    {
-      id: 1,
-      uri: 'https://res.cloudinary.com/dpz4urgxn/image/upload/v1678889224/lock-smith-banner1_bt54l9.jpg',
-    },
-    {
-      id: 2,
-      uri: 'https://res.cloudinary.com/dpz4urgxn/image/upload/v1679473405/diego-hernandez-MSepzbKFz10-unsplash_z1maxo.jpg',
-    },
-    {
-      id: 3,
-      uri: 'https://res.cloudinary.com/dpz4urgxn/image/upload/v1678889231/lock-smith-banner5_saq1vo.jpg',
-    },
-  ];
   function getType() {
     if (newOrders.type === 'home') {
       return 'Khóa Nhà';
