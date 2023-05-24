@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Image,
   StyleSheet,
   Text,
@@ -6,27 +7,62 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import AppContext from '../../navigator/AppContext';
 import AppBar from '../../components/Appbar/AppBar';
 import AccountItems from '../../components/AccountComponents/AccountItems';
 import {COLORS} from '../../contains';
 import CustomButton from '../../components/LoginComponents/CustomButton';
+import {baseUrl} from '../../contains/url';
+import axios from 'axios';
+import ModalAccount from '../../components/AccountComponents/ModalAccount';
+import {useNavigation} from '@react-navigation/native';
+import {getLocksmith} from '../../Api/RestFullApi';
 
 export default function AccountScreen() {
-  const {user} = useContext(AppContext);
+  const navigation = useNavigation();
+  const {user, setUser} = useContext(AppContext);
+  const [data, setData] = useState(null);
   const [disable, setDisable] = useState(true);
-  const date = new Date(user.birthDate);
+  const [modalVisible, setModalVisible] = useState(false);
+  const date = new Date(data?.birthDate ? data.birthDate : user.birthDate);
+  useEffect(() => {
+    getLocksmith(user._id, setData);
+  }, []);
+  useEffect(() => {
+    const focusHandler = navigation.addListener('focus', () => {
+      getLocksmith(user._id, setUser);
+    });
+    return focusHandler;
+  }, []);
+  if (!data) {
+    return <ActivityIndicator />;
+  }
+
   return (
     <>
       <AppBar centerText={'Thông tin tài khoản'} />
       <View style={styles.container}>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <Image style={styles.img} source={{uri: user.image}} />
-          <Text style={styles.text1}>{user.name}</Text>
+          <Image
+            style={styles.img}
+            source={{uri: data ? data.image : user.image}}
+          />
+          <Text style={styles.text1}>{data?.name ? data.name : user.name}</Text>
         </View>
 
-        <AccountItems text={'Giới tính:'} value={user.gender ? 'Nam' : 'Nữ'} />
+        <AccountItems
+          text={'Giới tính:'}
+          value={
+            data?.gender
+              ? data.gender
+                ? 'Nam'
+                : 'Nữ'
+              : user.gender
+              ? 'Nam'
+              : 'Nữ'
+          }
+        />
         <AccountItems
           text={'Ngày sinh:'}
           value={date.toLocaleDateString('en-GB')}
@@ -36,7 +72,13 @@ export default function AccountScreen() {
         <CustomButton
           title={'Sửa hồ sơ'}
           type={'PRIMARY'}
-          onPress={() => console.log('press')}
+          onPress={() => setModalVisible(!modalVisible)}
+        />
+        <ModalAccount
+          data={data}
+          setData={setData}
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
         />
       </View>
     </>

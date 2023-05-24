@@ -63,8 +63,8 @@ export default function ModalOrder({
               {newOrders.description}
             </Text>
             <Text style={styles.modalText}>
-              <Text style={styles.textBold}>Địa chỉ:</Text> 12 Nguyễn Văn Bảo ,
-              phường 4 , Gò Vấp
+              <Text style={styles.textBold}>Địa chỉ:</Text>{' '}
+              {newOrders.titleAddress}
             </Text>
           </View>
 

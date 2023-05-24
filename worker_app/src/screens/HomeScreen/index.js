@@ -32,6 +32,7 @@ import ModalDealCost from '../../components/OrderComponents/ModalDealCost';
 import messaging from '@react-native-firebase/messaging';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import {onPressCloseActive, onPressOpenActive} from '../../Api/RestFullApi';
 const origin = {latitude: 10.82313, longitude: 106.688829};
 const destination = {latitude: 10.82213, longitude: 106.686829};
 const GOOGLE_MAPS_APIKEY = 'AIzaSyDvH3f3z8eYs8Q-IolL2xJIshzQgjuQnV8';
@@ -42,7 +43,7 @@ const HomeScreen = () => {
   const [locksmith, setLocksmith] = useState(null);
   const [customer, setCustomer] = useState(null);
   const [order, setOrder] = useState(null);
-  const [isActive, setIsActive] = useState(true);
+
   const [currentLatitude, setCurrentLatitude] = useState('');
   const [currentLongitude, setCurrentLongitude] = useState('');
   const [myPosition, setMyPosition] = useState(null);
@@ -50,8 +51,39 @@ const HomeScreen = () => {
   const [newOrders, setNewOrders] = useState([]);
 
   const {user} = useContext(AppContext);
+  const [isActive, setIsActive] = useState(user.status);
   const [loading, setLoading] = useState(true);
   const [initialRoute, setInitialRoute] = useState('HomeScreen');
+
+  // Geolocation.getCurrentPosition(
+  //   position => {
+  //     console.log('position' + position);
+  //     setCurrentLatitude(position.coords.latitude);
+  //     setCurrentLongitude(position.coords.longitude);
+  //   },
+  //   error => console.log(error.message),
+  //   {
+  //     enableHighAccuracy: true,
+  //     timeout: 200000,
+  //     maximumAge: 500,
+  //     distanceFilter: 10,
+  //   },
+  // );
+
+  // Geolocation.watchPosition(
+  //   position => {
+  //     console.log('watchPoin');
+  //     setCurrentLatitude(position.coords.latitude);
+  //     setCurrentLongitude(position.coords.longitude);
+  //   },
+  //   error => console.log('error' + error),
+  //   {
+  //     enableHighAccuracy: true,
+  //     timeout: 20000,
+  //     maximumAge: 500,
+  //     distanceFilter: 10,
+  //   },
+  // );
 
   async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
@@ -100,8 +132,15 @@ const HomeScreen = () => {
     }
     getTokenMessaging();
   }, []);
+
   const onPressActive = () => {
-    setIsActive(!isActive);
+    if (isActive) {
+      onPressCloseActive(user._id);
+      setIsActive(!isActive);
+    } else {
+      onPressOpenActive(user._id);
+      setIsActive(!isActive);
+    }
   };
 
   const onAccept = async () => {
@@ -199,7 +238,7 @@ const HomeScreen = () => {
       });
   }
 
-  // useInterval(getOrder, 2000);
+  // useInterval(getOrder, 3000);
 
   return (
     <View style={styles.container}>

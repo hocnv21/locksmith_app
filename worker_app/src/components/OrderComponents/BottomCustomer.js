@@ -1,4 +1,11 @@
-import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import React from 'react';
 
 export default function BottomCustomer({customer}) {
@@ -23,7 +30,8 @@ export default function BottomCustomer({customer}) {
         </View>
 
         <View style={styles.row}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => Linking.openURL(`tel:${customer.phoneNumber}`)}>
             <Image
               style={styles.icon}
               source={require('../../assets/images/telephone.png')}

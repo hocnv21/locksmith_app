@@ -44,7 +44,7 @@ export default function LoginScreen({navigation}) {
 
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
-  const logoLink = require('../../assets/images/logo.png');
+  const logoLink = require('../../assets/images/lock.png');
 
   // If null, no SMS has been sent
   const [confirm, setConfirm] = useState(null);

@@ -66,10 +66,6 @@ const StackHome = () => {
         options={{headerShown: false}}
         component={SupportNavigator}></Drawer.Screen>
 
-      <Drawer.Screen name={'Ví'} options={{headerShown: false}}>
-        {() => <DummyScreen name={'Ví'} />}
-      </Drawer.Screen>
-
       <Drawer.Screen
         name={'Cài đặt'}
         component={AccountNavigator}

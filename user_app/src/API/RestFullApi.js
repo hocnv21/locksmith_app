@@ -31,6 +31,28 @@ export async function getExitsUser(phone) {
 
   return result;
 }
+export async function getLocksmith(uid, setData) {
+  const source = axios.CancelToken.source();
+
+  const url = `${baseUrl}/locksmith/${uid}`;
+  // console.log('waiting  get customer !!!!!!!!!');
+
+  await axios
+    .get(url, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Mobile Safari/537.36 Edg/115.0.0.0',
+      },
+    })
+    .then(value => {
+      setData(value.data.data);
+      return;
+    })
+    .catch(e => {
+      console.log('err get ' + e);
+      // console.log(customer);
+    });
+}
 export async function getCustomer(uid, setData) {
   const source = axios.CancelToken.source();
 

@@ -10,6 +10,7 @@ import {
   Button,
   ScrollView,
   Alert,
+  Linking,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import AppContext from '../../navigator/AppContext';
@@ -69,7 +70,7 @@ export default function OrderDetail() {
           // alert(` You have updated: ${JSON.stringify(response.data)}`);
           console.log('success push noti');
           setModalVisible(false);
-          Alert.alert('Bạn đã gửi báo giá thành công');
+          Alert.alert('Thông báo', 'Bạn đã gửi báo giá thành công');
         } else {
           throw new Error('An error has occurred');
         }
@@ -133,7 +134,8 @@ export default function OrderDetail() {
             source={{uri: customer.image}}
           />
           <Text style={{fontSize: 20, fontWeight: '700'}}>{customer.name}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => Linking.openURL(`tel:${customer.phoneNumber}`)}>
             <Image
               style={{
                 resizeMode: 'contain',
@@ -142,16 +144,6 @@ export default function OrderDetail() {
                 marginHorizontal: 10,
               }}
               source={require('../../assets/images/telephone.png')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image
-              style={{
-                resizeMode: 'contain',
-                height: 30,
-                width: 30,
-              }}
-              source={require('../../assets/images/message.png')}
             />
           </TouchableOpacity>
         </View>
@@ -166,30 +158,7 @@ export default function OrderDetail() {
             borderRadius: 10,
           }}>
           <Text style={{fontWeight: '600'}}>Địa chỉ:</Text>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image
-              style={{
-                resizeMode: 'contain',
-                height: 20,
-                width: 20,
-                margin: 5,
-              }}
-              source={require('../../assets/images/rec.png')}
-            />
-            <Text style={{fontSize: 16, fontWeight: '700'}}>17 Lê Lợi</Text>
-          </View>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image
-              style={{
-                resizeMode: 'contain',
-                height: 20,
-                width: 20,
-                margin: 5,
-              }}
-              source={require('../../assets/images/dotted-barline.png')}
-            />
-            <Text> </Text>
-          </View>
+
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
               style={{
@@ -201,7 +170,9 @@ export default function OrderDetail() {
               source={require('../../assets/images/placeholder.png')}
             />
             <Text style={{fontSize: 16, fontWeight: '700'}}>
-              12 Nguyễn Văn Bảo
+              {newOrders.titleAddress
+                ? newOrders.titleAddress
+                : '12 Nguyễn văn bảo'}
             </Text>
           </View>
         </View>

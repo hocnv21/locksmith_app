@@ -5,7 +5,7 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 import auth from '@react-native-firebase/auth';
-import {getIncome, getLocksmith} from '../Api/RestFullApi';
+import {getTotal} from '../Api/RestFullApi';
 import AppContext from './AppContext';
 import {useState} from 'react';
 
@@ -14,7 +14,7 @@ const CustomDrawer = props => {
   const [cost, setCost] = useState(null);
 
   useEffect(() => {
-    getIncome(user._id, setCost, 'Day');
+    getTotal(user._id, setCost);
   }, []);
 
   const signOut = async () => {
@@ -72,14 +72,6 @@ const CustomDrawer = props => {
         </View>
 
         {/* Make money */}
-        <Pressable
-          onPress={() => {
-            console.warn('Nạp tiền vào ví');
-          }}>
-          <Text style={{color: 'white', paddingVertical: 5}}>
-            Nạp tiền vào ví
-          </Text>
-        </Pressable>
       </View>
 
       <DrawerItemList {...props} />

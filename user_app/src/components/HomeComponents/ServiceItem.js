@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import {ICONS, SIZES} from '../../contains/theme';
+import {ICONS, SIZES, shadowView} from '../../contains/theme';
 import {useNavigation} from '@react-navigation/native';
 
 export default function ServiceItem({value}) {
@@ -29,14 +29,17 @@ export default function ServiceItem({value}) {
 }
 
 const styles = StyleSheet.create({
-  service: {
-    marginTop: 10,
-    marginBottom: 5,
-    borderRadius: 10,
-    width: '100%',
-    height: (SIZES.height * 0.87) / 4 - 15 - 10,
-    backgroundColor: '#ffffff',
-  },
+  service: [
+    {
+      marginTop: 10,
+      marginBottom: 5,
+      borderRadius: 10,
+      width: '100%',
+      height: (SIZES.height * 0.87) / 3 - 15 - 25,
+      backgroundColor: '#ffffff',
+    },
+    shadowView,
+  ],
   banner: {
     width: '100%',
     height: '70%',

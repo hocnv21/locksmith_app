@@ -15,12 +15,6 @@ export default [
     id: 3,
     type: 'safe',
     nameCategory: 'Sửa khóa két sắt',
-    banner: require('../images/banner/locksmith_home_banner.jpeg'),
-  },
-  {
-    id: 4,
-    type: 'home',
-    nameCategory: 'Sửa khóa nhà',
-    banner: require('../images/banner/locksmith_home_banner.jpeg'),
+    banner: require('../images/banner/safe-banner.jpeg'),
   },
 ];

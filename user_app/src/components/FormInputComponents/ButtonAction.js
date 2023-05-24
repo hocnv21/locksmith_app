@@ -12,20 +12,14 @@ export default function ButtonAction({setModalVisible}) {
         <Avatar.Icon icon="camera" size={32} />
         <Text>Thêm hình ảnh</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        // onPress={() => selectFile()}
-        style={styles.btnTakeImage}>
-        <Avatar.Icon icon="video" size={32} />
-        <Text>Thêm video</Text>
-      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {flexDirection: 'row'},
+  container: {flexDirection: 'row', justifyContent: 'center'},
   btnTakeImage: {
-    width: (SIZES.width - 40) / 2 - 10,
+    width: SIZES.width - 50,
     height: 80,
     borderWidth: 1,
     alignItems: 'center',

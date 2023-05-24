@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Linking,
   Platform,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
@@ -19,12 +20,14 @@ import {COLORS, SIZES, baseUrl} from '../../contains';
 import AppContext from '../../navigator/AppContext';
 import messaging from '@react-native-firebase/messaging';
 import ModalDealCost from '../../components/OrderComponents/ModalDealCost';
+import {getLocksmith} from '../../API/RestFullApi';
 
 export default function OrderScreen() {
   const route = useRoute();
   const navigation = useNavigation();
   const {user} = useContext(AppContext);
   const {data} = route.params;
+  const [locksmith, setLocksmith] = useState(null);
   const [showModalDealCost, setShowModalDealCost] = useState(false);
   const [cost, setCost] = useState('');
   const [stateScreen, setStateScreen] = useState('first');
@@ -82,7 +85,7 @@ export default function OrderScreen() {
       .then(response => {
         if (response.status === 201) {
           console.log('success push noti');
-          Alert.alert('Bạn đã chấp nhận giá đơn hàng thành công');
+          Alert.alert('Thông báo', 'Bạn đã chấp nhận giá đơn hàng thành công');
         } else {
           throw new Error('An error has occurred');
         }
@@ -156,59 +159,46 @@ export default function OrderScreen() {
 
     return unsubscribe;
   }, []);
+  useEffect(() => {
+    getLocksmith(data[0].locksmith_accepted_id, setLocksmith);
+  }, []);
 
   return (
     <ScrollView>
       <View style={styles.container}>
         {/* Information */}
-        <View style={styles.viewHeader}>
-          <Image
-            style={styles.avatar}
-            source={require('../../assets/images/user.png')}
-            // source={{uri: customer.image}}
-          />
-          <Text style={{fontSize: 20, fontWeight: '700'}}>
-            Nguyen Phi Hoang
-          </Text>
-          <TouchableOpacity>
+        {locksmith && (
+          <View style={styles.viewHeader}>
             <Image
-              style={styles.iconContact}
-              source={require('../../assets/images/telephone.png')}
+              style={styles.avatar}
+              source={{uri: locksmith.image}}
+              // source={{uri: customer.image}}
             />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image
-              style={styles.iconContact}
-              source={require('../../assets/images/message.png')}
-            />
-          </TouchableOpacity>
-        </View>
+            <Text style={{fontSize: 20, fontWeight: '700'}}>
+              {locksmith.name}
+            </Text>
+            <TouchableOpacity
+              onPress={() => Linking.openURL(`tel:${locksmith.phoneNumber}`)}>
+              <Image
+                style={styles.iconContact}
+                source={require('../../assets/images/telephone.png')}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
 
         {/* Location */}
 
         <View style={styles.viewLocation}>
           <Text style={{fontWeight: '600'}}>Địa chỉ:</Text>
-          <View style={styles.viewDirection}>
-            <Image
-              style={styles.icon}
-              source={require('../../assets/images/rec.png')}
-            />
-            <Text style={{fontSize: 16, fontWeight: '700'}}>17 Lê Lợi</Text>
-          </View>
-          <View style={styles.viewDirection}>
-            <Image
-              style={styles.icon}
-              source={require('../../assets/images/dotted-barline.png')}
-            />
-            <Text> </Text>
-          </View>
+
           <View style={styles.viewDirection}>
             <Image
               style={styles.icon}
               source={require('../../assets/images/placeholder.png')}
             />
             <Text style={{fontSize: 16, fontWeight: '700'}}>
-              12 Nguyễn Văn bảo
+              {data[0].titleAddress}
             </Text>
           </View>
         </View>

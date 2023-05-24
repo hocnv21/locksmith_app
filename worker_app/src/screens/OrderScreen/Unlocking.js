@@ -10,6 +10,7 @@ import {
   Button,
   ScrollView,
   Alert,
+  Linking,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import AppContext from '../../navigator/AppContext';
@@ -117,7 +118,8 @@ export default function Unlocking() {
             <Text style={{fontSize: 20, fontWeight: '700'}}>
               {customer.name}
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => Linking.openURL(`tel:${customer.phoneNumber}`)}>
               <Image
                 style={{
                   resizeMode: 'contain',
@@ -126,16 +128,6 @@ export default function Unlocking() {
                   marginHorizontal: 10,
                 }}
                 source={require('../../assets/images/telephone.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Image
-                style={{
-                  resizeMode: 'contain',
-                  height: 30,
-                  width: 30,
-                }}
-                source={require('../../assets/images/message.png')}
               />
             </TouchableOpacity>
           </View>
@@ -150,30 +142,7 @@ export default function Unlocking() {
               borderRadius: 10,
             }}>
             <Text style={{fontWeight: '600'}}>Địa chỉ:</Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Image
-                style={{
-                  resizeMode: 'contain',
-                  height: 20,
-                  width: 20,
-                  margin: 5,
-                }}
-                source={require('../../assets/images/rec.png')}
-              />
-              <Text style={{fontSize: 16, fontWeight: '700'}}>17 Lê Lợi</Text>
-            </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Image
-                style={{
-                  resizeMode: 'contain',
-                  height: 20,
-                  width: 20,
-                  margin: 5,
-                }}
-                source={require('../../assets/images/dotted-barline.png')}
-              />
-              <Text> </Text>
-            </View>
+
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image
                 style={{
@@ -185,7 +154,7 @@ export default function Unlocking() {
                 source={require('../../assets/images/placeholder.png')}
               />
               <Text style={{fontSize: 16, fontWeight: '700'}}>
-                12 Nguyễn Văn Bảo
+                {newOrders.titleAddress}
               </Text>
             </View>
           </View>

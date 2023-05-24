@@ -1,6 +1,7 @@
 import {
   ActivityIndicator,
   FlatList,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -29,6 +30,7 @@ export default function OrderHistoryScreen() {
   const [data, setData] = useState(null);
   const [dataComplete, setDataComplete] = useState([]);
   const [dataCancel, setDataCancel] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   async function getCount() {
     const url = `${baseUrl}/order/getCount/${user._id}`;
     await axios.get(url).then(response => {
@@ -69,19 +71,21 @@ export default function OrderHistoryScreen() {
   }
   async function getOrderCancel() {
     const url = `${baseUrl}/order/orderCancel/${user._id}`;
-    await axios.get(url).then(response => {
-      if (response.status === 404) {
-        return 'error found order';
-      }
-      if (response.status === 200) {
-        setData(response.data.data);
-      }
-    });
+    await axios
+      .get(url)
+      .then(response => {
+        if (response.status === 200) {
+          setData(response.data.data);
+        } else {
+          setData([]);
+          return;
+        }
+      })
+      .catch(error => setData([]));
   }
 
   useEffect(() => {
     getOrder();
-
     getCount();
   }, []);
   useEffect(() => {
@@ -103,6 +107,14 @@ export default function OrderHistoryScreen() {
     setIsSelectButton('Cancel');
     await getOrderCancel();
   }
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getOrder();
+    getCount();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   if (!data && !numOrder) {
     return (
@@ -117,16 +129,21 @@ export default function OrderHistoryScreen() {
       <View style={styles.container}>
         {numOrder && (
           <Dashboard
-            numberFirst={numOrder[0].countAll + numOrder[1].countAll}
+            numberFirst={
+              numOrder[0].countAll +
+              (numOrder[1]?.countAll ? numOrder[1].countAll : 0)
+            }
             numberSecond={
               numOrder[0]._id.status === 'complete'
                 ? numOrder[0].countAll
-                : numOrder[1].countAll
+                : numOrder[1]?.countAll
             }
             numberThird={
               numOrder[0]._id.status === 'canceled'
                 ? numOrder[0].countAll
-                : numOrder[1].countAll
+                : numOrder[1]?.countAll
+                ? numOrder[1].countAll
+                : 0
             }
           />
         )}
@@ -144,12 +161,19 @@ export default function OrderHistoryScreen() {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <FlatList
-            style={{width: '100%'}}
-            data={data}
-            renderItem={({item}) => <OrderItems item={item} />}
-            keyExtractor={item => item._id}
-          />
+          {data !== null ? (
+            <FlatList
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+              style={{width: '100%'}}
+              data={data}
+              renderItem={({item}) => <OrderItems item={item} />}
+              keyExtractor={item => item._id}
+            />
+          ) : (
+            <Text>Không có hóa đơn nào ở đây hết !!</Text>
+          )}
         </View>
       </View>
     </>

@@ -86,7 +86,9 @@ export default function ModalDetails({
                   source={require('../../assets/images/placeholder.png')}
                 />
                 <Text style={{fontSize: 16, fontWeight: '700'}}>
-                  12 Nguyễn Văn Bảo
+                  {orderData.titleAddress
+                    ? orderData.titleAddress
+                    : '12 Nguyễn văn bảo'}
                 </Text>
               </View>
             </View>

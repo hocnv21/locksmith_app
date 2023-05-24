@@ -54,6 +54,14 @@ export default function IncomeScreen() {
     getIncome(user._id, setWeekTotal, 'Week');
     getIncome(user._id, setMonthTotal, 'Month');
   }, [user._id]);
+  useEffect(() => {
+    const focusHandler = navigation.addListener('focus', () => {
+      getIncome(user._id, setDayTotal, 'Day');
+      getIncome(user._id, setWeekTotal, 'Week');
+      getIncome(user._id, setMonthTotal, 'Month');
+    });
+    return focusHandler;
+  }, []);
   if (!dayTotal || !weekTotal || !monthTotal) {
     return (
       <View>

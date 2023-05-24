@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     height: '100%',
+    flexDirection: 'row',
     top: 30,
   },
   textInput: {

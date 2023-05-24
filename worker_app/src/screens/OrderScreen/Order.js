@@ -7,6 +7,7 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  Linking,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -16,7 +17,7 @@ import Geolocation from '@react-native-community/geolocation';
 import {SIZES} from '../../contains';
 import BottomCustomer from '../../components/OrderComponents/BottomCustomer';
 
-const GOOGLE_MAPS_APIKEY = 'AIzaSyBKiGrdKU-VQQFtqT8b_ZkGQ_iB9ByIkj0';
+const GOOGLE_MAPS_APIKEY = 'AIzaSyBRIMcAbmG87nU5UbSOdCHyM0EPNIgj_g0';
 const ASPECT_RATIO = SIZES.width / SIZES.height;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
@@ -59,13 +60,6 @@ export default function Order() {
       distanceFilter: 10,
     },
   );
-
-  // useEffect(() => {
-  //   const lat = locksmith?.location.coordinates[1];
-  //   const long = locksmith?.location.coordinates[0];
-  //   setCurrentLatitude(lat);
-  //   setCurrentLongitude(long);
-  // }, []);
 
   if (currentLongitude === '') {
     return (

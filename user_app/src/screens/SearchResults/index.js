@@ -17,6 +17,7 @@ import RouteMap from '../../components/RouteMap';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import AppContext from '../../navigator/AppContext';
 import {baseUrl} from '../../contains';
+import moment from 'moment';
 
 const SearchResults = props => {
   const typeState = useState(null);
@@ -39,7 +40,10 @@ const SearchResults = props => {
   };
 
   useEffect(() => {
-    console.log('origin lat hahaha:' + JSON.stringify(originPlace));
+    console.log(
+      'origin lat hahaha:' +
+        JSON.stringify(originPlace.details.formatted_address),
+    );
     console.log('description:' + description);
     console.log('length photo:' + listPhotos.length);
     console.log('type lock:' + typeLock);
@@ -51,7 +55,6 @@ const SearchResults = props => {
         const response = await axios.get(url, {cancelToken: source.token});
 
         if (response.status === 200) {
-          console.log(response.data.data);
           setData(response.data.data);
           setIsLoading(false);
           return;
@@ -72,9 +75,6 @@ const SearchResults = props => {
   }, []);
 
   const onSubmitFormHandler = async () => {
-    var date = new Date();
-    console.log(date);
-
     const idCustomer = user._id;
     getArrayId(data);
     setIsLoading(true);
@@ -82,20 +82,16 @@ const SearchResults = props => {
       const response = await axios.post(`${baseUrl}/order/create`, {
         customer_id: user._id,
         customer_name: user.name,
-        locksmith_accepted_id: '',
         locksmith_ids: idData,
-        status: 'pending',
         description: description,
         listPhotos: listPhotos,
         type: typeLock,
-        total: 0,
         is_paid: false,
+        titleAddress: originPlace.details.formatted_address,
         coordinates: [
           originPlace.details.geometry.location.lng,
           originPlace.details.geometry.location.lat,
         ],
-        created_at: date,
-        updated_at: '',
       });
       if (response.status === 201) {
         // Alert.alert(` You have created: ${JSON.stringify(response.data)}`);

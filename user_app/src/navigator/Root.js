@@ -108,6 +108,7 @@ const RootNavigator = () => {
     <AppContext.Provider
       value={{
         user: user,
+        setUser: setUser,
       }}>
       <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
         {/* <StatusBar barStyle="light-content" backgroundColor="green" /> */}

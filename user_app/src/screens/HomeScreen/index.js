@@ -25,6 +25,7 @@ import AppBar from '../../components/Appbar/AppBar';
 import category from '../../assets/data/category';
 import ServiceItem from '../../components/HomeComponents/ServiceItem';
 import AppContext from '../../navigator/AppContext';
+import moment, {isDate} from 'moment';
 
 const HomeScreen = () => {
   const {user} = useContext(AppContext);
@@ -57,6 +58,7 @@ const HomeScreen = () => {
   async function registerAppWithFCM() {
     await messaging().registerDeviceForRemoteMessages();
   }
+
   async function getTokenMessaging() {
     if (Platform.OS === 'ios') {
       await registerAppWithFCM();
