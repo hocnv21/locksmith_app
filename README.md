@@ -16,61 +16,61 @@ This application provides users with the following features
 #### Screen for customer
 ##### Home screen
 <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/77ce916b-2e02-4ab0-b2f7-34dc7cc02963"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690186811/USER_home_oaha1z.png"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
 
 ##### Menu action
 <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/40fc434f-7609-42eb-a244-5512edc69bb0"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690186867/358940737_967188454543329_7684626816577328357_n_eh56yc.jpg"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
 
 ##### History
 <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/cbe224ed-6af3-4c47-b7fb-de40ade876ab"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690186866/359647119_180539054884145_3298810945173058610_n_uzhu7p.jpg"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
 
 ##### Input lock state
 <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/c63c6c4d-1c22-4ba1-b59c-7ef7bfae89a1"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690186807/USER_inputOrderOk_r6k0gg.png"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
   
 ##### Input location
 <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/2b38ea30-f35b-4c7c-9745-4e25c2e0d578"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690186799/USER_chon-dia-chi_uzdtwg.png"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
 
 ##### Show locksmiths around you
 <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/428ac1d7-bb51-45b5-be0d-32d77807d448"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690186802/USER_tho-khoa-gan-day_ptkqlz.png"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
   
 ##### Successful order
 <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/19e07bba-207b-42cd-9840-a3477c4531e4"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690186799/USER_doi-bao-gia_ryjytq.png"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
 
 <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/aa529c90-aedd-41a8-a6d2-aa678f5c51a1"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690186802/USER_Nhan-bao-gia_r5rdxo.png"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
 
 <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/4184d54b-4642-4778-a1ce-ffe32dfda107"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690186802/USER_chap-nhan-don-thanh-cong_eronxb.png"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
@@ -78,46 +78,46 @@ This application provides users with the following features
 #### Screen for worker
 ##### Home screen
 <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/29fb34ff-7f6f-4b9c-a73e-6be3c0b4e7b7"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690187050/LOCK_home_sok6ze.png"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
 
 ##### Menu Action
 <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/ae61dea0-fd95-47d9-8e86-faae5b70f852"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690187267/Screenshot_1690183044_cmicti.png"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
 
 ##### Income statistics
 <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/f279f7c6-643f-44fe-aeb0-e8349bfeff44"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690187334/Screen_Shot_2023-07-24_at_15.28.38_u8vol6.png"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
 
 
 ##### Popup new order
-  <img width="300" alt="image" src="https://github.com/hocnv21/locksmith_app/assets/99701800/ed7c0bc7-6797-43c5-93cb-ebae300de67f">
+  <img width="300" alt="image" src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690187268/Screen_Shot_2023-07-24_at_15.27.10_tbx9xp.png">
 
 ##### Send a lock repair quote
  <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/7070e117-7f93-4d08-be0e-1d1ef80afb62"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690187045/LOCK_gui-bao-gia_a7nt87.png"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
 
 ##### Map Directions
  <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/04308913-4868-4713-b24c-eb5015aaa6b3"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690187056/LOCK_chi-duong-map_tygxvh.png"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
 
 ##### Order has arrived
  <img
-  src="https://github.com/hocnv21/locksmith_app/assets/99701800/c66df041-d7a2-4cd7-af60-b9ecf5f0ad37"
+  src="https://res.cloudinary.com/dpz4urgxn/image/upload/v1690187052/LOCK_da-den-noi-sua-khoa_rvsm39.png"
   alt="Alt text"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; width: 300px">
